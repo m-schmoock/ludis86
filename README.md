@@ -1,4 +1,9 @@
 ludis86
 =======
 
-udis85 Lua bindings
+libudis86 Lua bindings. Compatible with Lua 5.1, 5.2 and LuaJIT. It was developed as a part of the [http://duschkumpane.org/index.php/mmbbq mmbbq] project, the Lua code injection framework.
+
+ * project page: [http://duschkumpane.org/index.php/ludis86 http://duschkumpane.org/index.php/ludis86]
+ * udis86 project: [http://udis86.sourceforge.net http://udis86.sourceforge.net]
+
+We use same license as udis86: FreeBSD
