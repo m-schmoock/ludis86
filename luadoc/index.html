@@ -72,6 +72,8 @@ document.getElementById("product_description").innerHTML = projectsub
 <p> This bindings were former part of Lua code injection framework:
  <a href="http://duschkumpane.org/index.php/mmbbq">mmBBQ</a></p>
 
+<p> The GitHub project site is: <a href="https://github.com/willsteel/ludis86">https://github.com/willsteel/ludis86</a></p>
+
 <h3>Overview</h3>
 
 <p> The project contains a standard Makefile that is used to build
@@ -80,12 +82,14 @@ document.getElementById("product_description").innerHTML = projectsub
 
 <h3>QuickUsage</h3>
 
-<pre><code>local ludis86 = require("ludis86")
+<pre><code>-- initialize and get the first disassembled instruction as string
+local ludis86 = require("ludis86")
 ud = ludis86.init_addr_intel32(0x401000)
 ud:dis()
 ud:asm()
 
-for i = 0, 10 do
+-- disassemble and print 10 instructions
+for i = 1, 10 do
     print(string.format("+%04X %016s %016s", ud:off(), ud:hex(), ud:asm()))
 end
 </code></pre>
