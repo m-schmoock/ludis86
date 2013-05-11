@@ -5,7 +5,9 @@
 -- This bindings were former part of Lua code injection framework: 
 -- [mmBBQ](http://duschkumpane.org/index.php/mmbbq)
 --
--- The GitHub project site is: [https://github.com/willsteel/ludis86](https://github.com/willsteel/ludis86)
+-- The GitHub project site is: [here](https://github.com/willsteel/ludis86)
+-- There you can find sources and checkout links. You can also just do:
+--	git clone https://github.com/willsteel/ludis86.git
 --
 --### Overview
 -- The project contains a standard Makefile that is used to build 
