@@ -14,7 +14,7 @@ static const luaL_reg ludis86_M[];
  */
 
 // extern void ud_init(struct ud*);
-int __cdecl ud_init_C(lua_State *L)
+int LUA_API ud_init_C(lua_State *L)
 {
 	ud_t* ud = lua_newuserdata(L, sizeof(ud_t));
 	ud_init(ud);
@@ -27,151 +27,153 @@ int __cdecl ud_init_C(lua_State *L)
 }
 
 //extern void ud_set_mode(struct ud*, uint8_t);
-int __cdecl ud_set_mode_C(lua_State *L)
+int LUA_API ud_set_mode_C(lua_State *L)
 {
 	ud_set_mode(lua_touserdata(L, 1), lua_tointeger(L, 2));
 	return 0;
 }
 
 //extern void ud_set_pc(struct ud*, uint64_t);
-int __cdecl ud_set_pc_C(lua_State *L)
+int LUA_API ud_set_pc_C(lua_State *L)
 {
 	ud_set_pc(lua_touserdata(L, 1), (uint64_t)lua_tonumber(L, 2));
 	return 0;
 }
 
 //extern void ud_set_input_hook(struct ud*, int (*)(struct ud*));
-int __cdecl ud_set_input_hook_C(lua_State *L)
+int LUA_API ud_set_input_hook_C(lua_State *L)
 {
 	ud_set_input_hook(lua_touserdata(L, 1), lua_touserdata(L, 2));
 	return 0;
 }
 
 //extern void ud_set_input_buffer(struct ud*, uint8_t*, size_t);
-int __cdecl ud_set_input_buffer_C(lua_State *L)
+int LUA_API ud_set_input_buffer_C(lua_State *L)
 {
 	ud_set_input_buffer(lua_touserdata(L, 1), lua_touserdata(L, 2), lua_tointeger(L, 3));
 	return 0;
 }
 
 //extern void ud_set_input_file(struct ud*, FILE*);
-int __cdecl ud_set_input_file_C(lua_State *L)
+int LUA_API ud_set_input_file_C(lua_State *L)
 {
 	ud_set_input_file(lua_touserdata(L, 1), lua_touserdata(L, 2));
 	return 0;
 }
 
 //extern void ud_set_vendor(struct ud*, unsigned);
-int __cdecl ud_set_vendor_C(lua_State *L)
+int LUA_API ud_set_vendor_C(lua_State *L)
 {
 	ud_set_vendor(lua_touserdata(L, 1), lua_tointeger(L, 2));
 	return 0;
 }
 
 //extern void ud_set_syntax(struct ud*, void (*)(struct ud*));
-int __cdecl ud_set_syntax_C(lua_State *L)
+int LUA_API ud_set_syntax_C(lua_State *L)
 {
 	ud_set_syntax(lua_touserdata(L, 1), lua_touserdata(L, 2));
 	return 0;
 }
 
 //extern void ud_input_skip(struct ud*, size_t);
-int __cdecl ud_input_skip_C(lua_State *L)
+int LUA_API ud_input_skip_C(lua_State *L)
 {
 	ud_input_skip(lua_touserdata(L, 1), lua_tointeger(L, 2));
 	return 0;
 }
 
 //extern int ud_input_end(struct ud*);
-int __cdecl ud_input_end_C(lua_State *L)
+int LUA_API ud_input_end_C(lua_State *L)
 {
 	lua_pushinteger(L, ud_input_end(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern unsigned int ud_decode(struct ud*);
-int __cdecl ud_decode_C(lua_State *L)
+int LUA_API ud_decode_C(lua_State *L)
 {
 	lua_pushinteger(L, ud_decode(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern unsigned int ud_disassemble(struct ud*);
-int __cdecl ud_disassemble_C(lua_State *L)
+int LUA_API ud_disassemble_C(lua_State *L)
 {
 	lua_pushinteger(L, ud_disassemble(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern void ud_translate_intel(struct ud*);
-int __cdecl ud_translate_intel_C(lua_State *L)
+int LUA_API ud_translate_intel_C(lua_State *L)
 {
 	ud_translate_intel(lua_touserdata(L, 1));
 	return 0;
 }
 
 //extern void ud_translate_att(struct ud*);
-int __cdecl ud_translate_att_C(lua_State *L)
+int LUA_API ud_translate_att_C(lua_State *L)
 {
 	ud_translate_att(lua_touserdata(L, 1));
 	return 0;
 }
 
 //extern char* ud_insn_asm(struct ud* u);
-int __cdecl ud_insn_asm_C(lua_State *L)
+int LUA_API ud_insn_asm_C(lua_State *L)
 {
 	lua_pushstring(L, ud_insn_asm(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern uint8_t* ud_insn_ptr(struct ud* u);
-int __cdecl ud_insn_ptr_C(lua_State *L)
+int LUA_API ud_insn_ptr_C(lua_State *L)
 {
 	lua_pushlightuserdata(L, ud_insn_ptr(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern uint64_t ud_insn_off(struct ud*);
-int __cdecl ud_insn_off_C(lua_State *L)
+int LUA_API ud_insn_off_C(lua_State *L)
 {
 	lua_pushnumber(L, ud_insn_off(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern char* ud_insn_hex(struct ud*);
-int __cdecl ud_insn_hex_C(lua_State *L)
+int LUA_API ud_insn_hex_C(lua_State *L)
 {
 	lua_pushstring(L, ud_insn_hex(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern unsigned int ud_insn_len(struct ud* u);
-int __cdecl ud_insn_len_C(lua_State *L)
+int LUA_API ud_insn_len_C(lua_State *L)
 {
 	lua_pushinteger(L, ud_insn_len(lua_touserdata(L, 1)));
 	return 1;
 }
 
 //extern const char* ud_lookup_mnemonic(enum ud_mnemonic_code c);
-int __cdecl ud_lookup_mnemonic_C(lua_State *L)
+int LUA_API ud_lookup_mnemonic_C(lua_State *L)
 {
 	lua_pushstring(L, ud_lookup_mnemonic(lua_tointeger(L, 1)));
 	return 1;
 }
 
+/* MSC: not in any udis version. can cause compile errors
 //extern void ud_set_user_opaque_data(struct ud*, void*);
-int __cdecl ud_set_user_opaque_data_C(lua_State *L)
+int LUA_API ud_set_user_opaque_data_C(lua_State *L)
 {
 	ud_set_user_opaque_data(lua_touserdata(L, 1), lua_touserdata(L, 2));
 	return 0;
 }
 
 //extern void *ud_get_user_opaque_data(struct ud*);
-int __cdecl ud_get_user_opaque_data_C(lua_State *L)
+int LUA_API ud_get_user_opaque_data_C(lua_State *L)
 {
 	lua_pushlightuserdata(L, ud_get_user_opaque_data(lua_touserdata(L, 1)));
 	return 1;
 }
+*/
 
 /*
  * register stuff to lua machine
@@ -199,11 +201,11 @@ static const luaL_reg ludis86_C[] =
 	{ "ud_insn_hex", ud_insn_hex_C },
 	{ "ud_insn_len", ud_insn_len_C },
 	{ "ud_lookup_mnemonic", ud_lookup_mnemonic_C },
-	{ "ud_set_user_opaque_data", ud_set_user_opaque_data_C },
-	{ "ud_get_user_opaque_data", ud_get_user_opaque_data_C },
+	//{ "ud_set_user_opaque_data", ud_set_user_opaque_data_C },
+	//{ "ud_get_user_opaque_data", ud_get_user_opaque_data_C },
 
 	// shorthandles
-	{ "new",  ud_init },
+	{ "new",  ud_init_C },
 	{ "dis",  ud_disassemble_C },
 	{ "asm",  ud_insn_asm_C },
 	{ "off",  ud_insn_off_C },
@@ -233,13 +235,13 @@ static const luaL_reg ludis86_M[] = {
   lua_pushlightuserdata(L, val); \
   lua_settable(L, -3);
 
-void ludis86(lua_State *L)
+int LUA_API ludis86(lua_State *L)
 {
 	// from Lua wiki - C bindings with metatable
-	luaL_register(L, LUBUDIS_REG, &ludis86_C);   /* create methods table, add it to the globals */
+	luaL_register(L, LUBUDIS_REG, (luaL_Reg*)&ludis86_C);   /* create methods table, add it to the globals */
 
-	luaL_newmetatable(L, LUBUDIS_REG);           /* create metatable and add it to the Lua registry */
-	luaL_register(L, 0, &ludis86_M);             /* fill metatable */
+	luaL_newmetatable(L, LUBUDIS_REG);                      /* create metatable and add it to the Lua registry */
+	luaL_register(L, 0, (luaL_Reg*)&ludis86_M);             /* fill metatable */
 	lua_pushliteral(L, "__index");
 	lua_pushvalue(L, -3);                        /* dup methods table*/
 	lua_rawset(L, -3);                           /* metatable.__index = methods */
@@ -253,7 +255,7 @@ void ludis86(lua_State *L)
 	LUA_KVE(L, UD_INP_CACHE_SZ);
 	LUA_KVE(L, UD_VENDOR_AMD);
 	LUA_KVE(L, UD_VENDOR_INTEL);
-	LUA_KVE(L, UD_VENDOR_ANY);
+	//LUA_KVE(L, UD_VENDOR_ANY);	// MSC: not in any udis version
 
 	// pointers
 	LUA_KVU(L, UD_SYN_INTEL);
@@ -419,6 +421,8 @@ void ludis86(lua_State *L)
 	LUA_KVE(L, UD_OP_JIMM);
 	LUA_KVE(L, UD_OP_CONST);
 
+/* MSC: not in any udis version
+ * can cause comiler errors
 	// enum from itab.h
 	LUA_KVE(L, UD_TAB__OPC_TABLE);
 	LUA_KVE(L, UD_TAB__OPC_X87);
@@ -432,6 +436,7 @@ void ludis86(lua_State *L)
 	LUA_KVE(L, UD_TAB__OPC_REG);
 	LUA_KVE(L, UD_TAB__OPC_ASIZE);
 	LUA_KVE(L, UD_TAB__OPC_2BYTE);
+*/
 
 	lua_pop(L, 1);                               /* drop maintable */
 }
