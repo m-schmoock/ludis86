@@ -3,4 +3,4 @@
 *.a
 *.dll
 
-luadoc/*
+luadoc
