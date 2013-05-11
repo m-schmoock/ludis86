@@ -178,6 +178,7 @@ int __cdecl ud_get_user_opaque_data_C(lua_State *L)
  */
 static const luaL_reg ludis86_C[] =
 {
+	// API mapping
 	{ "ud_init", ud_init_C },
 	{ "ud_set_mode", ud_set_mode_C },
 	{ "ud_set_pc", ud_set_pc_C },
@@ -202,15 +203,15 @@ static const luaL_reg ludis86_C[] =
 	{ "ud_get_user_opaque_data", ud_get_user_opaque_data_C },
 
 	// shorthandles
-	{ "new", ud_init },
-	{ "dis", ud_disassemble_C },
-	{ "asm", ud_insn_asm_C },
-	{ "off", ud_insn_off_C },
-	{ "hex", ud_insn_hex_C },
+	{ "new",  ud_init },
+	{ "dis",  ud_disassemble_C },
+	{ "asm",  ud_insn_asm_C },
+	{ "off",  ud_insn_off_C },
+	{ "hex",  ud_insn_hex_C },
 	{ "skip", ud_input_skip_C },
-	{ "len", ud_insn_len_C },
-	{ "ptr", ud_insn_ptr_C },
-	{ "pc", ud_set_pc_C },
+	{ "len",  ud_insn_len_C },
+	{ "ptr",  ud_insn_ptr_C },
+	{ "pc",   ud_set_pc_C },
 
 	{0, 0}	/* terminator */
 };
@@ -235,10 +236,10 @@ static const luaL_reg ludis86_M[] = {
 void ludis86(lua_State *L)
 {
 	// from Lua wiki - C bindings with metatable
-	luaL_register(L, LUBUDIS_REG, &ludis86_C); /* create methods table, add it to the globals */
+	luaL_register(L, LUBUDIS_REG, &ludis86_C);   /* create methods table, add it to the globals */
 
 	luaL_newmetatable(L, LUBUDIS_REG);           /* create metatable and add it to the Lua registry */
-	luaL_register(L, 0, &ludis86_M);           /* fill metatable */
+	luaL_register(L, 0, &ludis86_M);             /* fill metatable */
 	lua_pushliteral(L, "__index");
 	lua_pushvalue(L, -3);                        /* dup methods table*/
 	lua_rawset(L, -3);                           /* metatable.__index = methods */
@@ -434,3 +435,4 @@ void ludis86(lua_State *L)
 
 	lua_pop(L, 1);                               /* drop maintable */
 }
+

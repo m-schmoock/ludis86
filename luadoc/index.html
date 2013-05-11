@@ -26,17 +26,19 @@
 <br/>
 <h1>API Doc
 <!-- your html here -->
+
 <script>
 var projectname = "ludis86"
 var projectsub = "libudis86 Lua bindings"
 
-document.getElementById("product_logo").innerHTML = '<img src="../lua-logo-'+projectname+'.png" alt="logo"/>'
+document.getElementById("product_logo").innerHTML = '<img src="../resources/lua-logo-'+projectname+'.png" alt="logo"/>'
 document.getElementById("product_name").innerHTML = '<big>'+projectname+'</big>'
 document.getElementById("product_description").innerHTML = projectsub
 </script>
 <style>
 #content { width:initial ; }
 </style>
+
 </h1>
 
 
@@ -63,22 +65,69 @@ document.getElementById("product_description").innerHTML = projectsub
 
 <h1>Module <code>ludis86</code></h1>
 
-<p>
-<p>this module is a libudis86 C API binding </p>
+<p><a href="http://udis86.sourceforge.net">Udis86</a> C disassembler bindings for Lua.</p>
+<p><p> &ldquo;Udis86 is an easy-to-use, minimalistic disassembler library (libudis86)
+  for the x86 class of instruction set architectures.&rdquo;</p>
 
-<p> https://code.google.com/p/ludis86/
- http://udis86.sourceforge.net/</p>
+<p> This bindings were former part of Lua code injection framework:
+ <a href="http://duschkumpane.org/index.php/mmbbq">mmBBQ</a></p>
 
-<p> http://duschkumpane.org/index.php/ludis86</p>
+<h3>Overview</h3>
 
-<p>EXAMPLEs</p>
-<pre><code>ud = ludis86.init_addr_intel32(0x401000)
+<p> The project contains a standard Makefile that is used to build
+ shared Lua libraries for Windows and Linux. The contained C code part
+ of the bindings can as well be integrated or hard-linked into a Lua projekt.</p>
+
+<h3>QuickUsage</h3>
+
+<pre><code>local ludis86 = require("ludis86")
+ud = ludis86.init_addr_intel32(0x401000)
 ud:dis()
 ud:asm()
-</code></pre>
-</p>
-<p>
 
+for i = 0, 10 do
+    print(string.format("+%04X %016s %016s", ud:off(), ud:hex(), ud:asm()))
+end
+</code></pre>
+
+<h3>C-Function API mapping</h3>
+
+<pre><code>// Following code is taken from the file: ludis86.c
+// API mapping
+{ "ud_init", ud_init_C },
+{ "ud_set_mode", ud_set_mode_C },
+{ "ud_set_pc", ud_set_pc_C },
+{ "ud_set_input_hook", ud_set_input_hook_C },
+{ "ud_set_input_buffer", ud_set_input_buffer_C },
+{ "ud_set_input_file", ud_set_input_file_C },
+{ "ud_set_vendor", ud_set_vendor_C },
+{ "ud_set_syntax", ud_set_syntax_C },
+{ "ud_input_skip", ud_input_skip_C },
+{ "ud_input_end", ud_input_end_C },
+{ "ud_decode", ud_decode_C },
+{ "ud_disassemble", ud_disassemble_C },
+{ "ud_translate_intel", ud_translate_intel_C },
+{ "ud_translate_att", ud_translate_att_C },
+{ "ud_insn_asm", ud_insn_asm_C },
+{ "ud_insn_ptr", ud_insn_ptr_C },
+{ "ud_insn_off", ud_insn_off_C },
+{ "ud_insn_hex", ud_insn_hex_C },
+{ "ud_insn_len", ud_insn_len_C },
+{ "ud_lookup_mnemonic", ud_lookup_mnemonic_C },
+{ "ud_set_user_opaque_data", ud_set_user_opaque_data_C },
+{ "ud_get_user_opaque_data", ud_get_user_opaque_data_C },
+
+// shorthandles
+{ "new",  ud_init },
+{ "dis",  ud_disassemble_C },
+{ "asm",  ud_insn_asm_C },
+{ "off",  ud_insn_off_C },
+{ "hex",  ud_insn_hex_C },
+{ "skip", ud_input_skip_C },
+{ "len",  ud_insn_len_C },
+{ "ptr",  ud_insn_ptr_C },
+{ "pc",   ud_set_pc_C },
+</code></pre>
 </p>
 
 
@@ -86,7 +135,11 @@ ud:asm()
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#init_addr_intel32">init_addr_intel32&nbsp;(addr, len)</a></td>
-	<td class="summary">initializes a dissasembler to an address using intel32 syntax</td>
+	<td class="summary">initializes the dissasembler to an address using intel syntax and 32bit.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#init_addr_intel64">init_addr_intel64&nbsp;(addr, len)</a></td>
+	<td class="summary">initializes the dissasembler to an address using intel syntax and 64bit.</td>
 	</tr>
 </table>
 
@@ -101,7 +154,27 @@ ud:asm()
     <strong>init_addr_intel32&nbsp;(addr, len)</strong>
     </dt>
     <dd>
-    initializes a dissasembler to an address using intel32 syntax
+    initializes the dissasembler to an address using intel syntax and 32bit.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">addr</span>
+         the address to disassemble. can be userdata cdata or number</li>
+        <li><span class="parameter">len</span>
+         OPTIONAL the maximum number of bytes to read</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "init_addr_intel64"></a>
+    <strong>init_addr_intel64&nbsp;(addr, len)</strong>
+    </dt>
+    <dd>
+    initializes the dissasembler to an address using intel syntax and 64bit.
 
     <h3>Parameters:</h3>
     <ul>
