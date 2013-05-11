@@ -7,7 +7,7 @@ project = "API Doc"..[[
 var projectname = "ludis86"
 var projectsub = "libudis86 Lua bindings"
 
-document.getElementById("product_logo").innerHTML = '<img src="../resources/lua-logo-'+projectname+'.png" alt="logo"/>'
+document.getElementById("product_logo").innerHTML = '<img src="/resources/lua-logo-'+projectname+'.png" alt="logo"/>'
 document.getElementById("product_name").innerHTML = '<big>'+projectname+'</big>'
 document.getElementById("product_description").innerHTML = projectsub
 </script>
@@ -26,6 +26,7 @@ readme = {
 	"CHANGELOG",
 	"LICENSE",
 }
+
 file = {
 	".",
 }

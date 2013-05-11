@@ -1,4 +1,6 @@
 
 Version 0.1
+	- added Lua doc (ldoc)
+	- added Makefile
 	- initial push
 

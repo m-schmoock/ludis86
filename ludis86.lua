@@ -6,7 +6,6 @@
 -- [mmBBQ](http://duschkumpane.org/index.php/mmbbq)
 --
 -- The GitHub project site is: [here](https://github.com/willsteel/ludis86)
--- There you can find sources and checkout links. You can also just do:
 --	git clone https://github.com/willsteel/ludis86.git
 --
 --### Overview
