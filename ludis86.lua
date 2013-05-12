@@ -1,30 +1,41 @@
 ---[Udis86](http://udis86.sourceforge.net) C disassembler bindings for Lua.
--- "Udis86 is an easy-to-use, minimalistic disassembler library (libudis86) 
---  for the x86 class of instruction set architectures."
+--"Udis86 is an easy-to-use, minimalistic disassembler library (libudis86) for the x86 class of instruction set architectures."
+--This bindings were former part of Lua code injection framework: 
+--[mmBBQ](http://duschkumpane.org/index.php/mmbbq)
 --
--- This bindings were former part of Lua code injection framework: 
--- [mmBBQ](http://duschkumpane.org/index.php/mmbbq)
---
--- The GitHub project site is: [here](https://github.com/willsteel/ludis86)
---	git clone https://github.com/willsteel/ludis86.git
---
---### Overview
+--## Overview
 -- The project contains a standard Makefile that is used to build 
 -- shared Lua libraries for Windows and Linux. The contained C code part
--- of the bindings can as well be integrated or hard-linked into a Lua projekt.
+-- of the bindings can as well be integrated or hard-linked into a Lua projekt
+--### Source
+--The GitHub project site is: [here](https://github.com/willsteel/ludis86)
+--	git clone https://github.com/willsteel/ludis86.git
 --
---### QuickUsage
+--### Makefile targets
+--	make all
+--		# Build lib and doc
+--
+--	make doc
+--		# Just build the docs
+--
+--	make test
+--		# run 'test.lua'
+--
+--### Usage
 --	-- initialize and get the first disassembled instruction as string
 --	local ludis86 = require("ludis86")
 --	ud = ludis86.init_addr_intel32(0x401000)
 --	ud:dis()
 --	ud:asm()
 --	
---	-- disassemble and print 10 instructions
---	for i = 1, 10 do
+--	-- disassemble and print instructions
+--	while ud:dis() > 0 do
 --		print(string.format("+%04X %016s %016s", ud:off(), ud:hex(), ud:asm()))
 --	end
---    
+--
+--### Notice
+-- 2013 (c) by Michael Schmoock <michael@schmoock.net>
+-- License: Free-BSD
 --
 --### C-Function API mapping
 --	// Following code is taken from the file: ludis86.c
@@ -49,8 +60,6 @@
 --	{ "ud_insn_hex", ud_insn_hex_C },
 --	{ "ud_insn_len", ud_insn_len_C },
 --	{ "ud_lookup_mnemonic", ud_lookup_mnemonic_C },
---	{ "ud_set_user_opaque_data", ud_set_user_opaque_data_C },
---	{ "ud_get_user_opaque_data", ud_get_user_opaque_data_C },
 --
 --	// shorthandles
 --	{ "new",  ud_init },
@@ -63,35 +72,73 @@
 --	{ "ptr",  ud_insn_ptr_C },
 --	{ "pc",   ud_set_pc_C },
 --
+--
 -- @module ludis86
-module("ludis86", package.seeall);
+local ludis86 = require("ludis86_C");
+--local ludis86 = package.loadlib("ludis86", "luaopen_ludis86_C")();
 
-local ludis86_C = require("ludis86_C");
-local ludis86 = {}
 
---- initializes the dissasembler to an address using intel syntax and 32bit.
+--- sets syntax to intel 32bit
+-- @param ud initialized udis86 object
+ludis86.intel32 = function(ud)
+	ud:ud_set_mode(32);
+	ud:ud_set_syntax(ud.UD_SYN_INTEL);
+end
+
+--- sets syntax to intel 64bit
+-- @param ud initialized udis86 object
+ludis86.intel64 = function(ud)
+	ud:ud_set_mode(64);
+	ud:ud_set_syntax(ud.UD_SYN_INTEL);
+end
+
+--- initializes the disassembler to a string buffer usin intel syntax and 32bit.
+-- @param buf the string buffer
+-- @param len OPTIONAL the length to use. max and default: #buf
+-- @param pc OPTIONAL the programm counter to use
+ludis86.init_buf_intel32 = function(buf, len, pc)
+	if not len then len = #buf end 
+	local ud = ludis86.ud_init()
+	ludis86.intel32(ud)
+	ud:ud_set_input_buffer(buf, len)
+	ud:ud_set_pc(pc or 0)
+	return ud
+end
+
+--- initializes the disassembler to a string buffer usin intel syntax and 64bit.
+-- @param buf the string buffer
+-- @param len OPTIONAL the length to use. max and default: #buf
+-- @param pc OPTIONAL the programm counter to use
+ludis86.init_buf_intel64 = function(buf, len, pc)
+	if not len then len = #buf end 
+	local ud = ludis86.ud_init()
+	ludis86.intel64(ud)
+	ud:ud_set_input_buffer(buf, len)
+	ud:ud_set_pc(pc or 0)
+	return ud
+end
+
+--- initializes the disassembler to an address using intel syntax and 32bit.
 -- @param addr the address to disassemble. can be userdata cdata or number
 -- @param len OPTIONAL the maximum number of bytes to read
 ludis86.init_addr_intel32 = function(addr, len)
 	if not len then len = 2^31 end 
-	local ud = ludis86_C.ud_init();
-	ud:ud_set_input_buffer(touserdata(addr), len);
-	ud:ud_set_pc(ptrtonumber(addr));
-	ud:ud_set_mode(32);
-	ud:ud_set_syntax(ud.UD_SYN_INTEL);
-	return ud;
+	local ud = ludis86.ud_init()
+	ludis86.intel32(ud)
+	ud:ud_set_input_buffer(addr, len)
+	ud:ud_set_pc(addr)
+	return ud
 end
 
---- initializes the dissasembler to an address using intel syntax and 64bit.
+--- initializes the disassembler to an address using intel syntax and 64bit.
 -- @param addr the address to disassemble. can be userdata cdata or number
 -- @param len OPTIONAL the maximum number of bytes to read
 ludis86.init_addr_intel64 = function(addr, len)
 	if not len then len = 2^31 end 
-	local ud = ludis86_C.ud_init();
-	ud:ud_set_input_buffer(touserdata(addr), len);
-	ud:ud_set_pc(ptrtonumber(addr));
-	ud:ud_set_mode(64);
-	ud:ud_set_syntax(ud.UD_SYN_INTEL);
+	local ud = ludis86.ud_init()
+	ludis86.intel64(ud)
+	ud:ud_set_input_buffer(addr, len)
+	ud:ud_set_pc(addr)
 	return ud;
 end
 

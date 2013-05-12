@@ -10,6 +10,22 @@ static const luaL_reg ludis86_C[];
 static const luaL_reg ludis86_M[];
 
 /*
+ * utils
+ */
+inline void* lua_toptr(lua_State* L, int idx)
+{
+	int type = lua_type(L, idx);
+	switch (type){
+		case LUA_TNUMBER:        return (void*)lua_tointeger (L, idx);        break;
+		case LUA_TLIGHTUSERDATA: return (void*)lua_touserdata(L, idx);        break;
+		case LUA_TUSERDATA:      return (void*)lua_touserdata(L, idx);        break;
+		case LUA_TSTRING:        return (void*)lua_tostring  (L, idx);        break;
+		case 10:                 return (void*)lua_topointer (L, idx);        break;
+		default:                 return (void*)lua_topointer (L, idx);        break;
+	}
+}
+
+/*
  * definitions from libudis86 extern.h
  */
 
@@ -43,21 +59,21 @@ int LUA_API ud_set_pc_C(lua_State *L)
 //extern void ud_set_input_hook(struct ud*, int (*)(struct ud*));
 int LUA_API ud_set_input_hook_C(lua_State *L)
 {
-	ud_set_input_hook(lua_touserdata(L, 1), lua_touserdata(L, 2));
+	ud_set_input_hook(lua_touserdata(L, 1), lua_toptr(L, 2));
 	return 0;
 }
 
 //extern void ud_set_input_buffer(struct ud*, uint8_t*, size_t);
 int LUA_API ud_set_input_buffer_C(lua_State *L)
 {
-	ud_set_input_buffer(lua_touserdata(L, 1), lua_touserdata(L, 2), lua_tointeger(L, 3));
+	ud_set_input_buffer(lua_touserdata(L, 1), lua_toptr(L, 2), lua_tointeger(L, 3));
 	return 0;
 }
 
 //extern void ud_set_input_file(struct ud*, FILE*);
 int LUA_API ud_set_input_file_C(lua_State *L)
 {
-	ud_set_input_file(lua_touserdata(L, 1), lua_touserdata(L, 2));
+	ud_set_input_file(lua_touserdata(L, 1), lua_toptr(L, 2));
 	return 0;
 }
 
@@ -71,7 +87,7 @@ int LUA_API ud_set_vendor_C(lua_State *L)
 //extern void ud_set_syntax(struct ud*, void (*)(struct ud*));
 int LUA_API ud_set_syntax_C(lua_State *L)
 {
-	ud_set_syntax(lua_touserdata(L, 1), lua_touserdata(L, 2));
+	ud_set_syntax(lua_touserdata(L, 1), lua_toptr(L, 2));
 	return 0;
 }
 
@@ -163,7 +179,7 @@ int LUA_API ud_lookup_mnemonic_C(lua_State *L)
 //extern void ud_set_user_opaque_data(struct ud*, void*);
 int LUA_API ud_set_user_opaque_data_C(lua_State *L)
 {
-	ud_set_user_opaque_data(lua_touserdata(L, 1), lua_touserdata(L, 2));
+	ud_set_user_opaque_data(lua_touserdata(L, 1), lua_toptr(L, 2));
 	return 0;
 }
 
@@ -235,7 +251,7 @@ static const luaL_reg ludis86_M[] = {
   lua_pushlightuserdata(L, val); \
   lua_settable(L, -3);
 
-int LUA_API ludis86(lua_State *L)
+int LUA_API luaopen_ludis86_C(lua_State *L)
 {
 	// from Lua wiki - C bindings with metatable
 	luaL_register(L, LUBUDIS_REG, (luaL_Reg*)&ludis86_C);   /* create methods table, add it to the globals */

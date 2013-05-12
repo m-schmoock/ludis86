@@ -6,14 +6,18 @@ prepare:
 	mkdir -p luadoc
 
 clean:
-	rm -f *.so
-	rm -f *.o
-	rm -f *.dll
+	rm -rf *.so
+	rm -rf *.o
+	rm -rf *.dll
+	rm -rf luadoc
 
-all: prepare
-	gcc -fPIC *.c 
-	gcc -shared -Wl,-soname,libludis86.so.1 \
-			    -o libludis86.so.1.0.1 *.o -lc
+lib:
+	gcc -l udis86 -shared -fPIC ludis86.c -o ludis86_C.so
+
+test: lib
+	lua test.lua
+
+all: prepare lib doc
 
 # DOC
 doc: luadoc

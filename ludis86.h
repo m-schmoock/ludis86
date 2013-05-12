@@ -15,12 +15,12 @@
 #ifdef WIN32
 #define LUA_API __cdecl __declspec(dllexport)
 #else
-#define LUA_API
+#define LUA_API __cdecl
 #endif
 #endif
 
 //extern "C" {
-		int LUA_API ludis86(lua_State *L);
+		int LUA_API luaopen_ludis86_C(lua_State *L);
 //}
 
 
