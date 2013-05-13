@@ -455,5 +455,6 @@ int LUA_API luaopen_ludis86_C(lua_State *L)
 */
 
 	lua_pop(L, 1);                               /* drop maintable */
+	return 0;
 }
 

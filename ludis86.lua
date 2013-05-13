@@ -77,6 +77,30 @@
 local ludis86 = require("ludis86_C");
 --local ludis86 = package.loadlib("ludis86", "luaopen_ludis86_C")();
 
+--- initialiszes the disassembler to a file using intel syntax and 32bit.
+-- @param filename the path to an assembly file
+-- @param offset OPTIONAL the offset where to start disassembly
+-- @param len OPTIONAL the number if bytes to disassemlbe
+-- @param pc OPTIONAL the programm counter to use
+ludis86.init_file_intel32 = function(filename, offset, len, pc)
+		local file = io.open(filename, "r")
+		local buf = file:read("*a")
+		file:close();
+		if offset then buf=buf:sub(offset) end
+		return ludis86.init_buf_intel32(buf, len, pc);
+end
+--- initialiszes the disassembler to a file using intel syntax and 64bit.
+-- @param filename the path to an assembly file
+-- @param offset OPTIONAL the offset where to start disassembly
+-- @param len OPTIONAL the number if bytes to disassemlbe
+-- @param pc OPTIONAL the programm counter to use
+ludis86.init_file_intel64 = function(filename, offset, len, pc)
+		local file = io.open(filename, "r")
+		local buf = file:read("*a")
+		file:close();
+		if offset then buf=buf:sub(offset) end
+		return ludis86.init_buf_intel64(buf, len, pc);
+end
 
 --- sets syntax to intel 32bit
 -- @param ud initialized udis86 object
@@ -92,7 +116,7 @@ ludis86.intel64 = function(ud)
 	ud:ud_set_syntax(ud.UD_SYN_INTEL);
 end
 
---- initializes the disassembler to a string buffer usin intel syntax and 32bit.
+--- initializes the disassembler to a string buffer using intel syntax and 32bit.
 -- @param buf the string buffer
 -- @param len OPTIONAL the length to use. max and default: #buf
 -- @param pc OPTIONAL the programm counter to use
@@ -105,7 +129,7 @@ ludis86.init_buf_intel32 = function(buf, len, pc)
 	return ud
 end
 
---- initializes the disassembler to a string buffer usin intel syntax and 64bit.
+--- initializes the disassembler to a string buffer using intel syntax and 64bit.
 -- @param buf the string buffer
 -- @param len OPTIONAL the length to use. max and default: #buf
 -- @param pc OPTIONAL the programm counter to use
