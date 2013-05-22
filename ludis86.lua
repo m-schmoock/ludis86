@@ -6,7 +6,7 @@
 --## Overview
 -- The project contains a standard Makefile that is used to build 
 -- shared Lua libraries for Windows and Linux. The contained C code part
--- of the bindings can as well be integrated or hard-linked into a Lua projekt
+-- of the bindings can as well be integrated or hard-linked into a Lua project
 --### Source
 --The GitHub project site is: [here](https://github.com/willsteel/ludis86)
 --	git clone https://github.com/willsteel/ludis86.git
@@ -34,7 +34,7 @@
 --	end
 --
 --### Notice
--- 2013 (c) by Michael Schmoock <michael@schmoock.net>
+-- 2013 (c) by Michael Schmoock <michael@willigens.de>
 -- License: Free-BSD
 --
 --### C-Function API mapping
@@ -84,6 +84,7 @@ local ludis86 = require("ludis86_C");
 -- @param pc OPTIONAL the programm counter to use
 ludis86.init_file_intel32 = function(filename, offset, len, pc)
 		local file = io.open(filename, "r")
+		if not file then error("file not found:"..filename) end
 		local buf = file:read("*a")
 		file:close();
 		if offset then buf=buf:sub(offset) end
@@ -96,10 +97,19 @@ end
 -- @param pc OPTIONAL the programm counter to use
 ludis86.init_file_intel64 = function(filename, offset, len, pc)
 		local file = io.open(filename, "r")
+		if not file then error("file not found:"..filename) end
 		local buf = file:read("*a")
 		file:close();
 		if offset then buf=buf:sub(offset) end
 		return ludis86.init_buf_intel64(buf, len, pc);
+end
+
+--- disassemble and printf anything
+-- @param ud initialized udis86 object
+ludis86.print = function(ud)
+	while ud:dis() > 0 do
+		print(string.format("+%04X  %-16s  %-032s", ud:off(), ud:hex(), ud:asm()))
+	end
 end
 
 --- sets syntax to intel 32bit
