@@ -1,5 +1,7 @@
-ludis86
-=======
+<p align="center"><a href="http://lua.org"><img src="http://ludis86.schmoock.net/lua-logo-ludis86.png"></a></p>
+===
+
+## ludis86
 
 libudis86 Lua bindings. Compatible with Lua 5.1, 5.2 and LuaJIT. It was developed as a part of the mmbbq project, the Lua code injection framework.
 
