@@ -2,6 +2,8 @@ make: all
 default: all
 .PHONY: luadoc
 
+all: lib doc
+
 prepare:
 	mkdir -p luadoc
 
@@ -11,13 +13,14 @@ clean:
 	rm -rf *.dll
 	rm -rf luadoc
 
-lib:
+lib: prepare
 	gcc -l udis86 -shared -fPIC ludis86.c -o ludis86_C.so
 
 test: lib
-	lua test.lua
+	lua -e 'ludis86 = require("ludis86"); ludis86.test();'
 
-all: prepare lib doc
+run: lib
+	lua -e 'ludis86 = require("ludis86"); print("### entered ludis86 interactive mode ###")' -i
 
 # DOC
 doc: luadoc

@@ -176,4 +176,26 @@ ludis86.init_addr_intel64 = function(addr, len)
 	return ud;
 end
 
+--
+-- tests
+--
+ludis86.testbuf =  string.char( -- some binary data
+			0x90, -- nop
+			0x55, -- push ebp
+			0x41, -- inc ecx
+			0x5d, -- pop ebp
+			0xc3	-- ret
+)
+ludis86.test = function(suppressMsg)
+	local ud = ludis86.init_buf_intel32(ludis86.testbuf)
+	ud:dis(); assert(ud:asm():match("nop"))
+	ud:dis(); assert(ud:asm() == "push ebp")
+	ud:dis(); assert(ud:asm() == "inc ecx")
+	ud:dis(); assert(ud:asm() == "pop ebp")
+	ud:dis(); assert(ud:asm():match("ret"))
+
+	if not suppressMsg then print("tests run successfully") end
+end
+
+ludis86.test(true)
 return ludis86
