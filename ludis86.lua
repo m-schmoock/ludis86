@@ -22,12 +22,9 @@
 --		# run 'test.lua'
 --
 --### Usage
---	-- initialize and get the first disassembled instruction as string
+--	-- initialize udis to a specific address
 --	local ludis86 = require("ludis86")
---	ud = ludis86.init_addr_intel32(0x401000)
---	ud:dis()
---	ud:asm()
---	
+--	ud = ludis86.init_addr_intel32(0x401000) -- your address here :D
 --	-- disassemble and print instructions
 --	while ud:dis() > 0 do
 --		print(string.format("+%04X %016s %016s", ud:off(), ud:hex(), ud:asm()))
