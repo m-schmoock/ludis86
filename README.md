@@ -11,3 +11,26 @@ libudis86 Lua bindings. Compatible with Lua 5.1, 5.2 and LuaJIT. It was develope
  * udis86 project: http://udis86.sourceforge.net
 
 We use same license as udis86: FreeBSD
+
+
+===
+
+### Makefile targets
+    make all
+        # Build lib and doc
+    
+    make doc
+        # Just build the docs
+    
+    make test
+        # run 'test.lua'
+
+### Usage
+    -- init udis to a specific address
+    local ludis86 = require("ludis86")
+    ud = ludis86.init_addr_intel32(0x401000) -- your address here :D	
+    -- disassemble and print instructions
+    while ud:dis() > 0 do
+        print(string.format("+%04X %016s %016s", ud:off(), ud:hex(), ud:asm()))
+    end
+  
