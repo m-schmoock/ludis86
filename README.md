@@ -5,10 +5,9 @@
 
 libudis86 Lua bindings. Compatible with Lua 5.1, 5.2 and LuaJIT. It was developed as a part of the mmbbq project, the Lua code injection framework.
 
- * github page:    https://github.com/willsteel/ludis86
+ * github page:    https://github.com/m-schmoock/ludis86
  * udis86 project: http://udis86.sourceforge.net
  * project page:   http://ludis86.schmoock.net
- * mmbbq page:     http://duschkumpane.org/index.php/mmbbq
 
 We use same license as udis86: FreeBSD
 
